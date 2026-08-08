@@ -1,18 +1,25 @@
 class_name State extends Node
 
-signal change_state(new_state_name: String, msg: Dictionary)
+signal request_state_change(new_state: State)
+
+var state_machine: StateMachine
 var entity: Entity
 
-func enter_state(msg: Dictionary = {}):
-	set_process(true)
-	set_physics_process(true)
+func init(machine: StateMachine):
+	state_machine = machine
+	entity = machine.entity
 
-func exit_state():
-	set_process(false)
-	set_physics_process(false)
-	
+func enter() -> void:
+	pass
+
+
+func exit() -> void:
+	pass
+
+
 func update(delta: float) -> void:
 	pass
-	
-func physic_update(delta: float) -> void:
+
+
+func physics_update(delta: float) -> void:
 	pass

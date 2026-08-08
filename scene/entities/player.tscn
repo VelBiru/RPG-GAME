@@ -1,0 +1,96 @@
+[gd_scene format=3 uid="uid://bxhy7ou54ksug"]
+
+[ext_resource type="PackedScene" uid="uid://1nfg3g6pp3yc" path="res://scene/entities/entity.tscn" id="1_jsnrl"]
+[ext_resource type="Script" uid="uid://rmerltt4fkc8" path="res://scripts/entities/player.gd" id="2_jp462"]
+[ext_resource type="Script" uid="uid://cr7r8fdf5uld1" path="res://scripts/components/movement_component.gd" id="2_px1bn"]
+[ext_resource type="Script" uid="uid://disxcypjk8era" path="res://resources/data/player_data.gd" id="2_qgaon"]
+[ext_resource type="AnimationLibrary" uid="uid://dbo51lu68nn2i" path="res://assets/PlayerAnimation.res" id="2_qo353"]
+[ext_resource type="Script" uid="uid://clhel2vilpq6k" path="res://scripts/components/stats_component.gd" id="3_cq81n"]
+[ext_resource type="Texture2D" uid="uid://dgfx16b7wyoal" path="res://assets/character/highlights.png" id="3_qgaon"]
+[ext_resource type="Texture2D" uid="uid://4u1aslvd4y5v" path="res://assets/character/body.png" id="4_38mrs"]
+[ext_resource type="Texture2D" uid="uid://bqbse3gvs5o72" path="res://assets/character/armor/default/armor.png" id="5_g2wae"]
+[ext_resource type="Texture2D" uid="uid://c888wjfwk8end" path="res://assets/character/armor/default/leggings.png" id="6_jcy2a"]
+[ext_resource type="Texture2D" uid="uid://dghn0yse4km6g" path="res://assets/character/armor/default/boots.png" id="7_1uonj"]
+[ext_resource type="Script" uid="uid://gwldcstiguwb" path="res://scripts/components/component.gd" id="10_0s8uh"]
+[ext_resource type="Script" uid="uid://clrjpgcbw3ik" path="res://scripts/states/player/idle.gd" id="12_g2wae"]
+[ext_resource type="Script" uid="uid://bm7hufx743dtj" path="res://scripts/states/state_machine.gd" id="12_jcy2a"]
+[ext_resource type="Script" uid="uid://jbiivetvss33" path="res://scripts/components/animation_controller.gd" id="13_63u5j"]
+[ext_resource type="Script" uid="uid://bmvigyys76d4p" path="res://scripts/states/player/walk.gd" id="14_1uonj"]
+
+[sub_resource type="Resource" id="Resource_qgaon"]
+script = ExtResource("2_qgaon")
+metadata/_custom_type_script = "uid://disxcypjk8era"
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1lj6g"]
+
+[node name="Player" unique_id=643650612 instance=ExtResource("1_jsnrl")]
+scale = Vector2(2, 2)
+script = ExtResource("2_jp462")
+entity_data = SubResource("Resource_qgaon")
+
+[node name="Camera2D" type="Camera2D" parent="." index="0" unique_id=1896600342]
+offset = Vector2(0, -5)
+zoom = Vector2(2, 2)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="1" unique_id=986034556]
+shape = SubResource("CapsuleShape2D_1lj6g")
+
+[node name="AnimationPlayer" parent="." index="2" unique_id=1476559613]
+libraries/PlayerAnimation = ExtResource("2_qo353")
+
+[node name="Body" type="Sprite2D" parent="Appearance" parent_id_path=PackedInt32Array(2043980923) index="0" unique_id=630847123]
+texture = ExtResource("4_38mrs")
+offset = Vector2(0, -5)
+hframes = 8
+vframes = 15
+
+[node name="Highlights" type="Sprite2D" parent="Appearance" parent_id_path=PackedInt32Array(2043980923) index="1" unique_id=261660049]
+texture = ExtResource("3_qgaon")
+offset = Vector2(0, -5)
+hframes = 8
+vframes = 15
+
+[node name="Armor" type="Sprite2D" parent="Appearance/Equipment" parent_id_path=PackedInt32Array(667074527) index="0" unique_id=1300269779]
+texture = ExtResource("5_g2wae")
+offset = Vector2(0, -5)
+hframes = 8
+vframes = 15
+
+[node name="Leggings" type="Sprite2D" parent="Appearance/Equipment" parent_id_path=PackedInt32Array(667074527) index="1" unique_id=2073459919]
+texture = ExtResource("6_jcy2a")
+offset = Vector2(0, -5)
+hframes = 8
+vframes = 15
+
+[node name="Boots" type="Sprite2D" parent="Appearance/Equipment" parent_id_path=PackedInt32Array(667074527) index="2" unique_id=882594747]
+texture = ExtResource("7_1uonj")
+offset = Vector2(0, -5)
+hframes = 8
+vframes = 15
+
+[node name="Components" parent="." index="4" unique_id=314251772]
+script = ExtResource("10_0s8uh")
+
+[node name="MovementComponent" type="Node" parent="Components" index="0" unique_id=732322455]
+script = ExtResource("2_px1bn")
+metadata/_custom_type_script = "uid://cr7r8fdf5uld1"
+
+[node name="StatsComponent" type="Node" parent="Components" index="1" unique_id=1107264105]
+script = ExtResource("3_cq81n")
+metadata/_custom_type_script = "uid://clhel2vilpq6k"
+
+[node name="AnimationController" type="Node" parent="Components" index="2" unique_id=1696608424]
+script = ExtResource("13_63u5j")
+metadata/_custom_type_script = "uid://gwldcstiguwb"
+
+[node name="StateMachine" parent="." index="5" unique_id=666932473 node_paths=PackedStringArray("default_state")]
+script = ExtResource("12_jcy2a")
+default_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateMachine" index="0" unique_id=1882917451]
+script = ExtResource("12_g2wae")
+metadata/_custom_type_script = "uid://bo25jyg1jp0v5"
+
+[node name="Walk" type="Node" parent="StateMachine" index="1" unique_id=1179595306]
+script = ExtResource("14_1uonj")
+metadata/_custom_type_script = "uid://bo25jyg1jp0v5"

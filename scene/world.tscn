@@ -1,11 +1,7 @@
 [gd_scene format=3 uid="uid://jf7ukkhmnfpv"]
 
-[ext_resource type="PackedScene" uid="uid://dyua5u18pstir" path="res://scene/player.tscn" id="1_pjass"]
 [ext_resource type="PackedScene" uid="uid://dhh0lnhpfuo8d" path="res://scene/level.tscn" id="1_txmk2"]
 
 [node name="World" type="Node2D" unique_id=1490569527]
 
 [node name="Levels" parent="." unique_id=1192074214 instance=ExtResource("1_txmk2")]
-
-[node name="Player" parent="." unique_id=883150117 instance=ExtResource("1_pjass")]
-position = Vector2(481, 311)

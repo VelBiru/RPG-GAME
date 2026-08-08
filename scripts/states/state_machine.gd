@@ -1,62 +1,44 @@
-class_name StateMachine extends State
+class_name StateMachine extends Node
 
-@export var initial_state: State
+signal state_changed(old_state: State, new_state: State)
 
-var current_state: State = null
-var states: Dictionary = {}
+@export var default_state: State
 
-func initialize(owner: Entity) -> void:
+var current_state: State
+var entity: Entity
+
+func start() -> void:
+	change_state(default_state)
+
+func init(owner: Entity) -> void:
 	entity = owner
-	
-	for child in get_children():
-		if child is State:
-			states[child.name.to_lower()] = child
-			child.entity = owner
-			child.change_state.connect(_on_state_change_requested)
-			if child is StateMachine:
-				child.initialize(owner)
 
-	if initial_state:
-		transition_to(initial_state.name)
-	elif get_child_count() > 0 and get_child(0) is State:
-		transition_to(get_child(0).name)
+	for state in get_children():
+		if state is State:
+			state.state_machine = self
+			state.request_state_change.connect(change_state)
 
-## Godot frame callbacks that drive the state machine
+func change_state(new_state: State) -> void:
+	if current_state == new_state:
+		return
+
+	var old_state := current_state
+
+	if current_state:
+		current_state.exit()
+
+	current_state = new_state
+
+	if current_state:
+		current_state.enter()
+
+	state_changed.emit(old_state, current_state)
+
 func _process(delta: float) -> void:
-	update(delta)
-
-func _physics_process(delta: float) -> void:
-	physic_update(delta)
-
-## State lifecycle forwarding
-func enter_state(msg: Dictionary = {}) -> void:
-	if current_state:
-		current_state.enter_state(msg)
-
-func exit_state() -> void:
-	if current_state:
-		current_state.exit_state()
-
-func update(delta: float) -> void:
 	if current_state:
 		current_state.update(delta)
 
-func physic_update(delta: float) -> void:
-	if current_state:
-		current_state.physic_update(delta)
 
-## Transition logic
-func transition_to(target_state_name: String, msg: Dictionary = {}) -> void:
-	var key := target_state_name.to_lower()
-	if not states.has(key):
-		push_warning("StateMachine: State '%s' does not exist in %s." % [target_state_name, name])
-		return
-	
+func _physics_process(delta: float) -> void:
 	if current_state:
-		current_state.exit_state()
-	
-	current_state = states[key]
-	current_state.enter_state(msg)
-
-func _on_state_change_requested(new_state_name: String, msg: Dictionary = {}) -> void:
-	transition_to(new_state_name, msg)
+		current_state.physics_update(delta)

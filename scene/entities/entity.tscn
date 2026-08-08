@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://1nfg3g6pp3yc"]
+
+[ext_resource type="Script" uid="uid://dwiw1003wvshl" path="res://scripts/entities/entity.gd" id="1_amv31"]
+
+[node name="Entity" type="CharacterBody2D" unique_id=643650612]
+script = ExtResource("1_amv31")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1476559613]
+
+[node name="Appearance" type="Node2D" parent="." unique_id=2043980923]
+
+[node name="Equipment" type="Node2D" parent="Appearance" unique_id=667074527]
+
+[node name="Components" type="Node" parent="." unique_id=314251772]
+
+[node name="StateMachine" type="Node" parent="." unique_id=666932473]
